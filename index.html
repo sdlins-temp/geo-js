@@ -20,13 +20,55 @@
     <script>
       var map;
       function initMap() {
+        var labels = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ'
         var baypark = {lat: -15.7848877, lng: -47.853043}
+
         map = new google.maps.Map(document.getElementById('map'), {
           center: baypark,
-          zoom: 18
-        });
+          zoom: 3
+        })
+
+        var marcadores = lugares.map(function(lugar, i){
+          return new google.maps.Marker({
+            position: lugar,
+            label: labels[i % labels.length]
+          })
+        })
+
+        var grupoDeMarcadores = new MarkerClusterer(map, marcadores, {
+          imagePath: 'img/m'
+        })
         var marcador = new google.maps.Marker({position: baypark, map: map})
       }
+
+      var lugares = [
+        {lat: -15.563910, lng: -47.154312},
+        {lat: -15.718234, lng: -47.363181},
+        {lat: -15.727111, lng: -47.371124},
+        {lat: -15.848588, lng: -47.509834},
+        {lat: -16.151702, lng: -48.216968},
+        {lat: -16.371264, lng: -48.463657},
+        {lat: -16.604724, lng: -48.662905},
+        {lat: -16.817685, lng: -48.899196},
+        {lat: -17.528611, lng: -49.190222},
+        {lat: -17.650000, lng: -49.216667},
+        {lat: -17.759859, lng: -49.328708},
+        {lat: -17.865015, lng: -49.433858},
+        {lat: -18.770104, lng: -50.143299},
+        {lat: -18.873700, lng: -50.345187},
+        {lat: -18.974785, lng: -50.537978},
+        {lat: -18.989616, lng: -50.968119},
+        {lat: -19.330766, lng: -51.695692},
+        {lat: -19.527193, lng: -51.753218},
+        {lat: -19.730162, lng: -51.865694},
+        {lat: -20.134358, lng: -52.339506},
+        {lat: -20.334358, lng: -52.401315},
+        {lat: -20.535258, lng: -52.538000},
+        {lat: -20.799792, lng: -52.663352}
+      ]
+    </script>
+    <script
+      src="markerclusterer.js">
     </script>
     <script async defer
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKSpdzTfyajGnNxshp5o_-1h5kbdrsXLM&callback=initMap">
