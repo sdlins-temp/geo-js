@@ -37,19 +37,15 @@
         map.data.setStyle(function(feature){
           var magnitude = feature.getProperty('mag')
           console.log(magnitude)
-          return {icon: getCircle(magnitude)}
+          return {icon: {
+            path: google.maps.SymbolPath.CIRCLE,
+            fillColor: '#333',
+            fillOpacity: .5,
+            scale: Math.pow(2, magnitude) / 2,
+            strokeColor: '#fff',
+            strokeWeight: .3
+          }}
         })
-      }
-
-      function getCircle(magnitude) {
-        return {
-          path: google.maps.SymbolPath.CIRCLE,
-          fillColor: 'red',
-          fillOpacity: .2,
-          scale: Math.pow(2, magnitude) / 2,
-          strokeColor: 'white',
-          strokeWeight: .5
-        }
       }
 
       window.eqfeed_callback = function(resultados) {
