@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Rei da Geografia</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      #map {
+        height: 100%;
+      }
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script>
+      var map;
+      var baypark = {lat: -15.7848877, lng: -47.853043}
+
+      function initMap() {
+        map = new google.maps.Map(document.getElementById('map'), {
+          center: baypark,
+          zoom: 3,
+          mapTypeId: 'terrain'
+        })
+
+        var script = document.createElement('script')
+        script.src = 'earthquake_GeoJSONP.js'
+        document.getElementsByTagName('head')[0].appendChild(script)
+      }
+
+      window.eqfeed_callback = function(resultados) {
+        var dadosDeCalor = []
+        for (var i = 0; i < resultados.features.length; i++) {
+            var coords = resultados.features[i].geometry.coordinates
+            var latLong = new google.maps.LatLng(coords[1], coords[0])
+            var magnitude = resultados.features[i].properties.mag
+            var weightedLoc = {
+                location: latLong,
+                weight: Math.pow(2, magnitude)
+            }
+            dadosDeCalor.push(weightedLoc)
+        }
+        var mapaDeCalor = new google.maps.visualization.HeatmapLayer({
+            data: dadosDeCalor,
+            dissipating: false,
+            map: map
+        })
+      }
+    </script>
+    <script
+      src="markerclusterer.js">
+    </script>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBKSpdzTfyajGnNxshp5o_-1h5kbdrsXLM&libraries=visualization&callback=initMap">
+    </script>
+  </body>
+</html>
